@@ -1,5 +1,6 @@
 package TESTS;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -33,6 +34,18 @@ public class LoginTests extends BaseTest{
         //complete login process and verify that correct error message is displayed
         loginPage.logIn("43ktwlf0", "93240wa");
         Assert.assertEquals(loginPage.loginError.getText(), "Invalid email, username or password", "Error message with incorrect credentials isn't displayed or shows incorrect error message.");
+    }
+
+    @Test
+    public void testLogIn()
+    {
+        driver.get(loginURL);
+        //complete login process and verify that user is successfully logged in
+        loginPage.logIn("i2martin", "1.Jelena");
+        System.out.println(driver.getCurrentUrl());
+        //try to access one of the elements on the website so verify successful login
+        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.cssSelector("baasic-album-list div button"))));
+        Assert.assertEquals(driver.findElement(By.cssSelector("baasic-album-list div button")).isDisplayed(), true, "Elements missing on the login page or user wasn't able to log in.");
     }
 
     @Test

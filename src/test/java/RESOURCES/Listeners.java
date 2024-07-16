@@ -20,7 +20,11 @@ public class Listeners implements ITestListener {
     ThreadLocal<ExtentTest> extentTest = new ThreadLocal<>();
 
     public void onTestStart(ITestResult result) {
-        test = extent.createTest(result.getMethod().getMethodName());
+        ITestContext context = result.getTestContext();
+        // Retrieve the browser parameter from the test context
+        String browser = context.getCurrentXmlTest().getParameter("browser");
+        String testName = browser + "-" + result.getMethod().getMethodName();
+        test = extent.createTest(testName);
         extentTest.set(test);
     }
 

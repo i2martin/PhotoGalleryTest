@@ -11,6 +11,8 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.GeckoDriverInfo;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
+import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.safari.SafariOptions;
 import org.testng.Assert;
 
 import java.time.Duration;
@@ -20,7 +22,7 @@ public class DriverSetup {
 
   public WebDriver wd;
 
-  public enum BROWSER {CHROME, FIREFOX, EDGE}
+  public enum BROWSER {CHROME, FIREFOX, EDGE, SAFARI}
 
   public DriverSetup(BROWSER browser) {
 
@@ -41,6 +43,9 @@ public class DriverSetup {
         EdgeOptions edgeOptions = new EdgeOptions();
         edgeOptions.setCapability(EdgeOptions.LOGGING_PREFS,logs);
         wd = new EdgeDriver();
+      }
+      case SAFARI -> {
+        wd = new SafariDriver();
       }
       default -> Assert.fail("Missing setup for browser: " + browser);
     }
