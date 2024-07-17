@@ -2,12 +2,11 @@ package TESTS;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Parameters;
-import org.testng.annotations.Test;
+import org.testng.SkipException;
+import org.testng.annotations.*;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
 import pageObjects.LoginPage;
@@ -15,12 +14,12 @@ import pageObjects.LoginPage;
 import java.time.Duration;
 import java.util.List;
 
-public class LoginTests extends BaseTest{
+public class LoginTests extends BaseTest {
     LoginPage loginPage;
     WebDriverWait wait;
+
     @Test
-    public void testEmptyCredentials()
-    {
+    public void testEmptyCredentials() {
         driver.get(loginURL);
         //complete login process and verify that correct error message is displayed
         loginPage.logIn("", "");
@@ -28,8 +27,7 @@ public class LoginTests extends BaseTest{
     }
 
     @Test
-    public void testIncorrectCredentials()
-    {
+    public void testIncorrectCredentials() {
         driver.get(loginURL);
         //complete login process and verify that correct error message is displayed
         loginPage.logIn("43ktwlf0", "93240wa");
@@ -37,15 +35,37 @@ public class LoginTests extends BaseTest{
     }
 
     @Test
-    public void testLogIn()
-    {
+    public void testLogIn() {
         driver.get(loginURL);
         //complete login process and verify that user is successfully logged in
         loginPage.logIn("i2martin", "1.Jelena");
-        System.out.println(driver.getCurrentUrl());
         //try to access one of the elements on the website so verify successful login
         wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.cssSelector("baasic-album-list div button"))));
         Assert.assertEquals(driver.findElement(By.cssSelector("baasic-album-list div button")).isDisplayed(), true, "Elements missing on the login page or user wasn't able to log in.");
+    }
+
+    @Test(dependsOnMethods = {"testLogIn"})
+    public void testLogOut() {
+        driver.get(homeURL);
+        //loginPage.logIn("i2martin", "1.Jelena");
+        wait.until(ExpectedConditions.visibilityOf(loginPage.menuContainer));
+        Actions actions = new Actions(driver);
+        actions.moveToElement(loginPage.menuContainer).build().perform();
+        wait.until(ExpectedConditions.visibilityOf(loginPage.menu));
+        loginPage.menu.click();
+        wait.until(ExpectedConditions.visibilityOf(loginPage.logOutLink));
+        loginPage.logOutLink.click();
+        try{
+            //wait for one of the elements to appear on login page and verify that it's on proper URL
+            wait.until(ExpectedConditions.visibilityOf(loginPage.usernameInput));
+            Assert.assertEquals(driver.getCurrentUrl(), loginURL , "Logging out is not working or user's redirected to wrong place." );
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            Assert.fail("User is redirected to wrong URL.");
+        }
+
     }
 
     @Test
@@ -65,14 +85,14 @@ public class LoginTests extends BaseTest{
         softAssert.assertAll();
     }
 
-    @Test
+    @Test()
     public void testPasswordRecoveryLink(){
         driver.get(loginURL);
         loginPage.recoverPasswordLink.click();
         Assert.assertEquals(driver.getCurrentUrl(), passwordRecoveryURL, "Link for password recovery isn't working.");
     }
 
-    @Test(dependsOnMethods = {"testPasswordRecoveryLink"})
+    @Test()
     public void testPasswordRecoveryIncorrectInput(){
         driver.get(loginURL);
         loginPage.recoverPasswordLink.click();
@@ -88,7 +108,7 @@ public class LoginTests extends BaseTest{
         softAssert.assertAll();
     }
 
-    @Test(dependsOnMethods = {"testPasswordRecoveryLink"})
+    @Test()
     public void testPasswordRecoveryCorrectInput(){
         SoftAssert softAssert = new SoftAssert();
         driver.get(loginURL);

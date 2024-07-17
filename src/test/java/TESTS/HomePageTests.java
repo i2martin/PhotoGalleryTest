@@ -46,8 +46,6 @@ public class HomePageTests extends BaseTest{
         homePage.btnPhotoGallery.click();
         wait.until(ExpectedConditions.visibilityOf(homePage.photoGalleryContainer));
         Assert.assertEquals(homePage.photoGalleryContainer.isDisplayed(), true, "Photo Gallery isn't showing properly");
-
-
     }
 
     @Test(priority = 2)
@@ -57,9 +55,7 @@ public class HomePageTests extends BaseTest{
         List<WebElement> menuLinks = new ArrayList<>(Arrays.asList(homePage.homeLink, homePage.registerLink, homePage.loginLink));
         List<String> expectedURLs = new ArrayList<>(Arrays.asList(homeURL, registerURL, loginURL));
         SoftAssert softAssert = new SoftAssert();
-
         Actions actions = new Actions(driver);
-
         for (int i = 0; i < menuLinks.size(); i++)
         {
             //go to home page and wait for the menu container to be interactable
@@ -76,7 +72,6 @@ public class HomePageTests extends BaseTest{
             softAssert.assertEquals(driver.getCurrentUrl(), expectedURLs.get(i), "Given menu link isn't working properly." );
         }
         softAssert.assertAll();
-
     }
     @BeforeTest(alwaysRun = true)
     @Parameters("browser")

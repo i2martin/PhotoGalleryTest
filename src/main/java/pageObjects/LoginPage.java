@@ -40,6 +40,15 @@ public class LoginPage {
   @FindBy(css = "form div p")
   public WebElement recoverPasswordMessage;
 
+  @FindBy(css = ".menu__title")
+  public WebElement menu;
+
+  @FindBy(css = "div.menu")
+  public WebElement menuContainer;
+
+  @FindBy(xpath = "//li/span[text()='Log out']")
+  public WebElement logOutLink;
+
   public LoginPage(WebDriver driver) {
     this.driver = driver;
     PageFactory.initElements(driver, this);
