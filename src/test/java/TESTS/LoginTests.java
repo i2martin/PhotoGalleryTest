@@ -39,7 +39,7 @@ public class LoginTests extends BaseTest {
         driver.get(loginURL);
         //complete login process and verify that user is successfully logged in
         loginPage.logIn("i2martin", "1.Jelena");
-        //try to access one of the elements on the website so verify successful login
+        //try to access one of the elements on the website to verify successful login
         wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.cssSelector("baasic-album-list div button"))));
         Assert.assertEquals(driver.findElement(By.cssSelector("baasic-album-list div button")).isDisplayed(), true, "Elements missing on the login page or user wasn't able to log in.");
     }

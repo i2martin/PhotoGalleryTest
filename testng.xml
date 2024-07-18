@@ -10,6 +10,7 @@
             <class name="TESTS.HomePageTests" />
             <class name="TESTS.LoginTests" />
             <class name="TESTS.RegisterTests" />
+            <class name="TESTS.PhotoGalleryTests" />
         </classes>
     </test>
     <test thread-count="5" parallel="classes" verbose="2" name="FirefoxTests">
@@ -18,6 +19,7 @@
             <class name="TESTS.HomePageTests" />
             <class name="TESTS.LoginTests" />
             <class name="TESTS.RegisterTests" />
+            <class name="TESTS.PhotoGalleryTests" />
         </classes>
     </test>
     <test thread-count="5" parallel="classes" verbose="2" name="EdgeTests">
@@ -26,6 +28,7 @@
             <class name="TESTS.HomePageTests" />
             <class name="TESTS.LoginTests" />
             <class name="TESTS.RegisterTests" />
+            <class name="TESTS.PhotoGalleryTests" />
         </classes>
     </test>
 </suite>
