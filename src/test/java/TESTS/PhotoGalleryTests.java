@@ -68,7 +68,6 @@ public class PhotoGalleryTests extends BaseTest{
     @Test(dependsOnMethods = {"testCorrectAlbumName"})
     public void testCoverImageUpload()
     {
-        SoftAssert softAssert = new SoftAssert();
         //click on the "Upload image" link
         photoGallery.uploadImageLink.click();
         //open the upload image popup and upload an image
@@ -105,7 +104,7 @@ public class PhotoGalleryTests extends BaseTest{
                 break;
             }
         }
-        Assert.assertEquals(testPassed, true, "There's an error with album creation. Album wasn't created or the album's name doesn't match.");
+        Assert.assertTrue(testPassed, "There's an error with album creation. Album wasn't created or the album's name doesn't match.");
     }
 
     @Test(dependsOnMethods = {"testSuccessfulAlbumCreation"})
@@ -142,7 +141,7 @@ public class PhotoGalleryTests extends BaseTest{
         softAssert.assertEquals(photoGallery.albumTitle.getText().equals(albumName + " - 1 photos"), true, "Number of photos in an album wasn't updated correctly");
         photoGallery.albumImage.click();
         //open an image link --> URL should be anything besided page Missing URL
-        softAssert.assertFalse(driver.getCurrentUrl() != pageMissingURL, "Image in an album can't be opened - broken link.");
+        softAssert.assertFalse(driver.getCurrentUrl() != pageMissingURL , "Image in an album can't be opened - broken link.");
         softAssert.assertAll();
     }
 
@@ -181,7 +180,6 @@ public class PhotoGalleryTests extends BaseTest{
         WebElement album = photoGallery.getAlbumByAlbumName(albumName);
         //hover over album and delete it
         actions.moveToElement(album).build().perform();
-        //photoGallery.deleteBtn.click();
         photoGallery.getDeleteButtonByAlbumName(albumName).click();
         wait.until(ExpectedConditions.visibilityOf(photoGallery.popUpDeleteBtn));
         photoGallery.popUpDeleteBtn.click();

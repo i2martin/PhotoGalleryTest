@@ -5,7 +5,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.SkipException;
 import org.testng.annotations.*;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
@@ -41,13 +40,12 @@ public class LoginTests extends BaseTest {
         loginPage.logIn("i2martin", "1.Jelena");
         //try to access one of the elements on the website to verify successful login
         wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.cssSelector("baasic-album-list div button"))));
-        Assert.assertEquals(driver.findElement(By.cssSelector("baasic-album-list div button")).isDisplayed(), true, "Elements missing on the login page or user wasn't able to log in.");
+        Assert.assertTrue(driver.findElement(By.cssSelector("baasic-album-list div button")).isDisplayed(), "Elements missing on the login page or user wasn't able to log in.");
     }
 
     @Test(dependsOnMethods = {"testLogIn"})
     public void testLogOut() {
         driver.get(homeURL);
-        //loginPage.logIn("i2martin", "1.Jelena");
         wait.until(ExpectedConditions.visibilityOf(loginPage.menuContainer));
         Actions actions = new Actions(driver);
         actions.moveToElement(loginPage.menuContainer).build().perform();

@@ -2,7 +2,10 @@ package pageObjects;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.PageFactory;
+
+import java.util.List;
 
 public class HomePage {
   WebDriver driver;
@@ -33,6 +36,9 @@ public class HomePage {
 
   @FindBy(xpath = "//li/span[text()='Login']")
   public WebElement loginLink;
+
+  @FindBys(@FindBy(css = "footer a"))
+  public List<WebElement> footerLinks;
 
   public HomePage(WebDriver driver) {
     this.driver = driver;

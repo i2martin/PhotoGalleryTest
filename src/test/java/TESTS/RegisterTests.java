@@ -26,7 +26,7 @@ public class RegisterTests extends BaseTest{
         //Unfocus the element after filling it in
         registerPage.confirmPasswordInput.sendKeys(Keys.TAB);
         //verify that the button is disabled when incorrect information is presented
-        Assert.assertEquals(registerPage.registerBtn.isEnabled(), false, "Registration button is enabled even though incorrect information was provided");
+        Assert.assertFalse(registerPage.registerBtn.isEnabled(), "Registration button is enabled even though incorrect information was provided");
     }
 
     @Test
@@ -38,8 +38,8 @@ public class RegisterTests extends BaseTest{
         //Unfocus the element after filling it in
         registerPage.confirmPasswordInput.sendKeys(Keys.TAB);
         //verify that the password messages are shown
-        Assert.assertEquals(registerPage.passwordTooShortAlert.isDisplayed(), true, "Password too short message wasn't displayed.");
-        Assert.assertEquals(registerPage.passwordMismatchAlert.isDisplayed(), true, "Passwords do not match message wasn't displayed");
+        Assert.assertTrue(registerPage.passwordTooShortAlert.isDisplayed(), "Password too short message wasn't displayed.");
+        Assert.assertTrue(registerPage.passwordMismatchAlert.isDisplayed(), "Passwords do not match message wasn't displayed");
         //verify that proper password alert messages are shown
         Assert.assertEquals(registerPage.passwordTooShortAlert.getText(), "Password too short.", "Alert message was displayed but with incorrect information.");
         Assert.assertEquals(registerPage.passwordMismatchAlert.getText(), "Passwords do not match.", "Alert message was displayed but with incorrect information.");
@@ -53,7 +53,7 @@ public class RegisterTests extends BaseTest{
         //Unfocus the element after filling it in
         registerPage.emailInput.sendKeys(Keys.TAB);
         //verify that the alert message is displayed
-        Assert.assertEquals(registerPage.incorrectEmailAlert.isDisplayed(), true, "Incorrect email alert is not displayed.");
+        Assert.assertTrue(registerPage.incorrectEmailAlert.isDisplayed(), "Incorrect email alert is not displayed.");
         //verify that the alert message is showing expected text.
         Assert.assertEquals(registerPage.incorrectEmailAlert.getText(), "Please enter the correct email address!", "Incorrect email message doesn't match the expected one.");
     }

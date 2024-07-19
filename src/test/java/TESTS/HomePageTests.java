@@ -12,6 +12,11 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.asserts.SoftAssert;
 import pageObjects.HomePage;
 import org.openqa.selenium.JavascriptExecutor;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,7 +50,7 @@ public class HomePageTests extends BaseTest{
         //verify that photo gallery element appears
         homePage.btnPhotoGallery.click();
         wait.until(ExpectedConditions.visibilityOf(homePage.photoGalleryContainer));
-        Assert.assertEquals(homePage.photoGalleryContainer.isDisplayed(), true, "Photo Gallery isn't showing properly");
+        Assert.assertTrue(homePage.photoGalleryContainer.isDisplayed(), "Photo Gallery isn't showing properly");
     }
 
     @Test(priority = 2)
@@ -70,6 +75,38 @@ public class HomePageTests extends BaseTest{
             //click on a menu link and verify it's working
             menuLinks.get(i).click();
             softAssert.assertEquals(driver.getCurrentUrl(), expectedURLs.get(i), "Given menu link isn't working properly." );
+        }
+        softAssert.assertAll();
+    }
+
+    @Test(priority = 3)
+    public void testFooterLinks()
+    {
+        homePage.goTo();
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
+        SoftAssert softAssert = new SoftAssert();
+        for (WebElement footerLink: homePage.footerLinks)
+        {
+            String url = footerLink.getAttribute("href");
+            try{
+                HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+                connection.setRequestMethod("HEAD");
+                connection.setInstanceFollowRedirects(true);
+                int responseCode = connection.getResponseCode();
+
+                if (!(responseCode == 200 || responseCode == 201 || responseCode == 301 ||
+                      responseCode == 302 || responseCode == 304 || responseCode == 308)) {
+                    softAssert.fail("Broken link detected: " + url);
+                }
+                else
+                {
+                    //if it gets to here, link's working properly
+                    softAssert.assertTrue(true);
+                }
+            } catch (IOException e) {
+                softAssert.fail("Broken or invalid link detected: " + url);
+            }
         }
         softAssert.assertAll();
     }
